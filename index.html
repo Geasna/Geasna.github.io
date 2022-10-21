@@ -71,6 +71,107 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-队列的基本操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/10/21/%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2022-10-21T14:41:57.000Z" itemprop="datePublished">2022-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/10/21/%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">队列的基本操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#include&lt;stdio.h&gt;<br>#include&lt;malloc.h&gt;<br>#define OK 1<br>#define ERROR 0<br>#define TRUE 1<br>#define FALSE 0<br>#define OVERFLOW -2<br>typedef struct QNode{<br>    int data;<br>    struct QNode *next;<br>}QNode,*QueuePtr;<br>typedef struct{<br>    QueuePtr front;<br>    QueuePtr rear;<br>}LinkQueue;<br>int visit(int c)<br>{<br>    printf(“%d “,c);<br>    return 1;<br>}<br>int InitQueue(LinkQueue &amp;Q);<br>int EnQueue(LinkQueue &amp;Q,int e);<br>int DeQueue(LinkQueue &amp;Q,int &amp;e);<br>int QueueEmpty(LinkQueue Q);<br>int QueueLength(LinkQueue Q);<br>int QueueTraverse(LinkQueue Q,void visit());</p>
+<p>int InitQueue(LinkQueue &amp;Q)<br>{<br>    Q.front&#x3D;Q.rear&#x3D;(QNode*)malloc(sizeof(QNode));<br>    if(!Q.front) return ERROR;<br>    Q.front-&gt;next&#x3D;NULL;<br>    return OK;<br>}</p>
+<p>int EnQueue(LinkQueue &amp;Q,int e)<br>{</p>
+<pre><code>QueuePtr p=(QueuePtr)malloc(sizeof(QNode));
+if(!p) return ERROR;
+p-&gt;data=e;p-&gt;next=NULL;
+Q.rear-&gt;next=p;
+Q.rear=p;
+return OK;
+</code></pre>
+<p>}</p>
+<p>int DeQueue(LinkQueue &amp;Q,int &amp;e)<br>{<br>    if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>    QueuePtr p;<br>    p&#x3D;Q.front-&gt;next;<br>    e&#x3D;p-&gt;data;<br>    Q.front-&gt;next&#x3D;p-&gt;next;<br>    if(Q.rear&#x3D;&#x3D;p) Q.rear&#x3D;Q.front;<br>    free(p);<br>    return OK;<br>}</p>
+<p>int QueueEmpty(LinkQueue Q)<br>{<br>    if(Q.front&#x3D;&#x3D;Q.rear)<br>    return -1;<br>    else<br>    return 1;<br>}</p>
+<p>int QueueLength(LinkQueue Q)<br>{<br>    if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>    int i&#x3D;0;<br>    while(Q.front!&#x3D;Q.rear)<br>    {<br>        i++;<br>        Q.front&#x3D;Q.front-&gt;next;<br>    }<br>    return i;<br>}</p>
+<p>int QueueTraverse(LinkQueue Q,int (*visit)(int))<br>{<br>    QueuePtr P;<br>    P&#x3D;Q.front-&gt;next;<br>    while(P)<br>    {<br>        visit(P-&gt;data);<br>        P&#x3D;P-&gt;next;<br>    }<br>    return OK;<br>}</p>
+<p>int main()<br>{<br>    LinkQueue Q;<br>    InitQueue(Q);<br>    int i;<br>    for(i&#x3D;1;i&lt;&#x3D;6;i++)<br>    {<br>        EnQueue(Q,2*i-1);<br>    }<br>    QueueTraverse(Q,visit);<br>    printf(“\n”);<br>    EnQueue(Q,7);<br>    QueueTraverse(Q,visit);<br>    printf(“\n”);<br>    int e;<br>    DeQueue(Q,e);<br>    QueueTraverse(Q,visit);<br>    printf(“\n”);<br>    int k,m;<br>    k&#x3D;QueueLength(Q);<br>    printf(“%d\n”,k);<br>    m&#x3D;QueueEmpty(Q);<br>    if(m&gt;0)<br>    printf(“isnotEmpty”);<br>    else<br>    printf(“isEmpty”);<br>    return 0;<br>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/10/21/%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" data-id="cl9ilqugl0001souv9mle9j2c" data-title="队列的基本操作" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-栈的基本操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/10/21/%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2022-10-21T14:41:47.000Z" itemprop="datePublished">2022-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/10/21/%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">栈的基本操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>#include&lt;stdio.h&gt;<br>#include&lt;malloc.h&gt;<br>#define STACK_INIT_SIZE 100<br>#define STACKINCREMENT 10<br>#define OK 1</p>
+<p>typedef struct{<br>    int *base;<br>    int *top;<br>    int stacksize;<br>}SqStack;</p>
+<p>int InitStack(SqStack &amp;S);<br>int Push(SqStack &amp;S,int e);<br>int Pop(SqStack &amp;S,int &amp;e);<br>int StackEmpty(SqStack &amp;S);<br>int StackTraverse(SqStack S,int (*visit)(int));<br>int visit(int c)<br>{<br>    printf(“%d”,c);<br>    return 1;<br>}</p>
+<p>int InitStack(SqStack &amp;S)<br>{<br>    S.base&#x3D;(int <em>)malloc(STACK_INIT_SIZE</em>sizeof(int));<br>    if(!S.base) return -1;<br>    S.top&#x3D;S.base;<br>    S.stacksize&#x3D;STACK_INIT_SIZE;<br>    return OK;<br>}</p>
+<p>int Push(SqStack &amp;S,int e)<br>{<br>    if(S.top-S.base&gt;&#x3D;S.stacksize)<br>    {<br>        S.base&#x3D;(int*)realloc(S.base,(S.stacksize+STACKINCREMENT)*sizeof(int));<br>        if(!S.base) return -1;<br>        S.top&#x3D;S.base+S.stacksize;<br>        S.stacksize+&#x3D;STACKINCREMENT;<br>    }<br>    *S.top++&#x3D;e;<br>    return OK;<br>}</p>
+<p>int Pop(SqStack &amp;S,int &amp;e)<br>{<br>    if(S.base&#x3D;&#x3D;S.top) return -1;<br>    e&#x3D;*–S.top;<br>    return OK;<br>}</p>
+<p>int StackEmpty(SqStack &amp;S)<br>{<br>    if(S.base&#x3D;&#x3D;S.top) return -1;<br>    else return 1;<br>}</p>
+<p>int StackTraverse(SqStack S,int (*visit)(int))<br>{<br>    while(S.top!&#x3D;S.base)<br>        visit(*S.base++);<br>    return OK;<br>}</p>
+<p>int main()<br>{<br>    SqStack S;<br>    InitStack(S);<br>    int i;<br>    for(i&#x3D;1;i&lt;&#x3D;6;i++)<br>    *(S.top++)&#x3D;2*i-1;<br>    StackTraverse(S,visit);<br>    printf(“\n”);<br>    Push(S,6);<br>    StackTraverse(S,visit);<br>    printf(“\n”);<br>    int e;<br>    Pop(S,e);<br>    StackTraverse(S,visit);<br>    printf(“\n”);<br>    int k;<br>    k&#x3D;StackEmpty(S);<br>    if(i&gt;0)<br>    printf(“isnotEmpty”);<br>    else<br>    printf(“isEmpty”);<br>    return 0;<br>}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/10/21/%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" data-id="cl9ilqugh0000souv9odwdfmx" data-title="栈的基本操作" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-C语言链表及测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/10/15/C%E8%AF%AD%E8%A8%80%E9%93%BE%E8%A1%A8%E5%8F%8A%E6%B5%8B%E8%AF%95/" class="article-date">
@@ -446,6 +547,14 @@ int ListTraverse(LinkList L)
       <ul>
         
           <li>
+            <a href="/2022/10/21/%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">队列的基本操作</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/21/%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">栈的基本操作</a>
+          </li>
+        
+          <li>
             <a href="/2022/10/15/C%E8%AF%AD%E8%A8%80%E9%93%BE%E8%A1%A8%E5%8F%8A%E6%B5%8B%E8%AF%95/">C语言链表及测试</a>
           </li>
         
@@ -455,10 +564,6 @@ int ListTraverse(LinkList L)
         
           <li>
             <a href="/2022/10/09/first/">first</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/09/hello-world/">Hello World</a>
           </li>
         
       </ul>
