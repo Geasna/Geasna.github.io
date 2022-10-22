@@ -93,22 +93,22 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>​	#include&lt;stdio.h&gt;<br>​	#include&lt;malloc.h&gt;<br>​	#define OK 1<br>​	#define ERROR 0<br>​	#define TRUE 1<br>​	#define FALSE 0<br>​	#define OVERFLOW -2<br>​	typedef struct QNode{<br>​			int data;<br>​			struct QNode *next;<br>​	}QNode,*QueuePtr;<br>​	typedef struct{<br>​			QueuePtr front;<br>​			QueuePtr rear;<br>​	}LinkQueue;<br>​	int visit(int c)<br>​	{<br>​			printf(“%d “,c);<br>​			return 1;<br>​	}<br>​	int InitQueue(LinkQueue &amp;Q);<br>​	int EnQueue(LinkQueue &amp;Q,int e);<br>​	int DeQueue(LinkQueue &amp;Q,int &amp;e);<br>​	int QueueEmpty(LinkQueue Q);<br>​	int QueueLength(LinkQueue Q);<br>​	int QueueTraverse(LinkQueue Q,void visit());</p>
-<p>​	int InitQueue(LinkQueue &amp;Q)<br>​	{<br>​			Q.front&#x3D;Q.rear&#x3D;(QNode*)malloc(sizeof(QNode));<br>​			if(!Q.front) return ERROR;<br>​			Q.front-&gt;next&#x3D;NULL;<br>​			return OK;<br>​	}</p>
+        <p>​	#include&lt;stdio.h&gt;<br>​	#include&lt;malloc.h&gt;<br>​	#define OK 1<br>​	#define ERROR 0<br>​	#define TRUE 1<br>​	#define FALSE 0<br>​	#define OVERFLOW -2<br>​	typedef struct QNode{<br>​				int data;<br>​				struct QNode *next;<br>​	}QNode,*QueuePtr;<br>​	typedef struct{<br>​				QueuePtr front;<br>​				QueuePtr rear;<br>​	}LinkQueue;<br>​	int visit(int c)<br>​	{<br>​			printf(“%d “,c);<br>​			return 1;<br>​	}<br>​	int InitQueue(LinkQueue &amp;Q);<br>​	int EnQueue(LinkQueue &amp;Q,int e);<br>​	int DeQueue(LinkQueue &amp;Q,int &amp;e);<br>​	int QueueEmpty(LinkQueue Q);<br>​	int QueueLength(LinkQueue Q);<br>​	int QueueTraverse(LinkQueue Q,void visit());</p>
+<p>​	int InitQueue(LinkQueue &amp;Q)<br>​	{<br>​				Q.front&#x3D;Q.rear&#x3D;(QNode*)malloc(sizeof(QNode));<br>​				if(!Q.front) return ERROR;<br>​				Q.front-&gt;next&#x3D;NULL;<br>​				return OK;<br>​	}</p>
 <p>​	int EnQueue(LinkQueue &amp;Q,int e)<br>​	{</p>
-<pre><code>QueuePtr p=(QueuePtr)malloc(sizeof(QNode));
-if(!p) return ERROR;
-p-&gt;data=e;p-&gt;next=NULL;
-Q.rear-&gt;next=p;
-Q.rear=p;
-return OK;
+<pre><code>    QueuePtr p=(QueuePtr)malloc(sizeof(QNode));
+    if(!p) return ERROR;
+    p-&gt;data=e;p-&gt;next=NULL;
+    Q.rear-&gt;next=p;
+    Q.rear=p;
+    return OK;
 </code></pre>
 <p>​	}</p>
-<p>​	int DeQueue(LinkQueue &amp;Q,int &amp;e)<br>​	{<br>​			if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>​			QueuePtr p;<br>​			p&#x3D;Q.front-&gt;next;<br>​			e&#x3D;p-&gt;data;<br>​			Q.front-&gt;next&#x3D;p-&gt;next;<br>​			if(Q.rear&#x3D;&#x3D;p) Q.rear&#x3D;Q.front;<br>​			free(p);<br>​			return OK;<br>​	}</p>
-<p>​	int QueueEmpty(LinkQueue Q)<br>​	{<br>​			if(Q.front&#x3D;&#x3D;Q.rear)<br>​			return -1;<br>​			else<br>​			return 1;<br>​	}</p>
-<p>​	int QueueLength(LinkQueue Q)<br>​	{<br>​			if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>​			int i&#x3D;0;<br>​			while(Q.front!&#x3D;Q.rear)<br>​			{<br>​					i++;<br>​					Q.front&#x3D;Q.front-&gt;next;<br>​			}<br>​			return i;<br>​	}</p>
-<p>​	int QueueTraverse(LinkQueue Q,int (*visit)(int))<br>​	{<br>​			QueuePtr P;<br>​			P&#x3D;Q.front-&gt;next;<br>​			while(P)<br>​			{<br>​					visit(P-&gt;data);<br>​					P&#x3D;P-&gt;next;<br>​			}<br>​			return OK;<br>​	}</p>
-<p>​	int main()<br>​	{<br>​			LinkQueue Q;<br>​			InitQueue(Q);<br>​			int i;<br>​			for(i&#x3D;1;i&lt;&#x3D;6;i++)<br>​			{<br>​					EnQueue(Q,2*i-1);<br>​			}<br>​			QueueTraverse(Q,visit);<br>​			printf(“\n”);<br>​			EnQueue(Q,7);<br>​			QueueTraverse(Q,visit);<br>​			printf(“\n”);<br>​			int e;<br>​			DeQueue(Q,e);<br>​			QueueTraverse(Q,visit);<br>​			printf(“\n”);<br>​			int k,m;<br>​			k&#x3D;QueueLength(Q);<br>​			printf(“%d\n”,k);<br>​			m&#x3D;QueueEmpty(Q);<br>​			if(m&gt;0)<br>​				printf(“isnotEmpty”);<br>​			else<br>​				printf(“isEmpty”);<br>​			return 0;<br>​	}</p>
+<p>​	int DeQueue(LinkQueue &amp;Q,int &amp;e)<br>​	{<br>​				if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>​				QueuePtr p;<br>​				p&#x3D;Q.front-&gt;next;<br>​				e&#x3D;p-&gt;data;<br>​				Q.front-&gt;next&#x3D;p-&gt;next;<br>​				if(Q.rear&#x3D;&#x3D;p) Q.rear&#x3D;Q.front;<br>​				free(p);<br>​				return OK;<br>​	}</p>
+<p>​	int QueueEmpty(LinkQueue Q)<br>​	{<br>​				if(Q.front&#x3D;&#x3D;Q.rear)<br>​				return -1;<br>​				else<br>​				return 1;<br>​	}</p>
+<p>​	int QueueLength(LinkQueue Q)<br>​	{<br>​				if(Q.front&#x3D;&#x3D;Q.rear) return ERROR;<br>​				int i&#x3D;0;<br>​				while(Q.front!&#x3D;Q.rear)<br>​				{<br>​						i++;<br>​						Q.front&#x3D;Q.front-&gt;next;<br>​				}<br>​				return i;<br>​	}</p>
+<p>​	int QueueTraverse(LinkQueue Q,int (*visit)(int))<br>​	{<br>​				QueuePtr P;<br>​				P&#x3D;Q.front-&gt;next;<br>​				while(P)<br>​				{<br>​						visit(P-&gt;data);<br>​						P&#x3D;P-&gt;next;<br>​				}<br>​				return OK;<br>​	}</p>
+<p>​	int main()<br>​	{<br>​				LinkQueue Q;<br>​				InitQueue(Q);<br>​				int i;<br>​				for(i&#x3D;1;i&lt;&#x3D;6;i++)<br>​				{<br>​						EnQueue(Q,2*i-1);<br>​				}<br>​				QueueTraverse(Q,visit);<br>​				printf(“\n”);<br>​				EnQueue(Q,7);<br>​				QueueTraverse(Q,visit);<br>​				printf(“\n”);<br>​				int e;<br>​				DeQueue(Q,e);<br>​				QueueTraverse(Q,visit);<br>​				printf(“\n”);<br>​				int k,m;<br>​				k&#x3D;QueueLength(Q);<br>​				printf(“%d\n”,k);<br>​				m&#x3D;QueueEmpty(Q);<br>​				if(m&gt;0)<br>​					printf(“isnotEmpty”);<br>​				else<br>​					printf(“isEmpty”);<br>​				return 0;<br>​	}</p>
 
       
     </div>
@@ -148,7 +148,7 @@ return OK;
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>​	#include&lt;stdio.h&gt;<br>​	#include&lt;malloc.h&gt;<br>​	#define STACK_INIT_SIZE 100<br>​	#define STACKINCREMENT 10<br>​	#define OK 1</p>
-<p>​	typedef struct{<br>​		int *base;<br>​		int *top;<br>​		int stacksize;<br>​	}SqStack;</p>
+<p>​	typedef struct{<br>​			int *base;<br>​			int *top;<br>​			int stacksize;<br>​	}SqStack;</p>
 <p>​	int InitStack(SqStack &amp;S);<br>​	int Push(SqStack &amp;S,int e);<br>​	int Pop(SqStack &amp;S,int &amp;e);<br>​	int StackEmpty(SqStack &amp;S);<br>​	int StackTraverse(SqStack S,int (*visit)(int));<br>​	int visit(int c)<br>​	{<br>​			printf(“%d”,c);<br>​			return 1;<br>​	}</p>
 <p>​	int InitStack(SqStack &amp;S)<br>​	{<br>​			S.base&#x3D;(int <em>)malloc(STACK_INIT_SIZE</em>sizeof(int));<br>​			if(!S.base) return -1;<br>​			S.top&#x3D;S.base;<br>​			S.stacksize&#x3D;STACK_INIT_SIZE;<br>​			return OK;<br>​	}</p>
 <p>​	int Push(SqStack &amp;S,int e)<br>​	{<br>​			if(S.top-S.base&gt;&#x3D;S.stacksize)<br>​			{<br>​					S.base&#x3D;(int*)realloc(S.base,(S.stacksize+STACKINCREMENT)*sizeof(int));<br>​					if(!S.base) return -1;<br>​					S.top&#x3D;S.base+S.stacksize;<br>​					S.stacksize+&#x3D;STACKINCREMENT;<br>​			}<br>​			*S.top++&#x3D;e;<br>​			return OK;<br>​	}</p>
@@ -195,7 +195,7 @@ return OK;
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>​	#include&lt;stdio.h&gt;<br>​	#include&lt;malloc.h&gt;<br>​	#define OK 1<br>​	#define ERROR 0<br>​	#define TRUE 1<br>​	#define FALSE 0<br>​	#define OVERFLOW -2</p>
-<p>​	typedef struct LNode<br>​	{<br>​		int date;<br>​		struct LNode *next;<br>​	}LNode,*LinkList;</p>
+<p>​	typedef struct LNode<br>​	{<br>​			int date;<br>​			struct LNode *next;<br>​	}LNode,*LinkList;</p>
 <p>​	int InitList(LinkList *L);<br>​	int DestroyList(LinkList *L);<br>​	int ClearList(LinkList *L);<br>​	int ListEmpty(LinkList L);<br>​	int ListLength(LinkList L);<br>​	int GetElem(LinkList L,int i,int *e);<br>​	int LocateElem(LinkList L,int e);<br>​	int PriorElem(LinkList L,int cur_e,int *pre_e);<br>​	int NextElem(LinkList L,int cur_e,int *next_e);<br>​	int ListInsert(LinkList *L,int i,int e);<br>​	int ListDelete(LinkList *L,int i,int *e);<br>​	int ListTraverse(LinkList L);</p>
 <pre><code>int InitList(LinkList *L)
 &#123;
