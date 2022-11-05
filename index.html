@@ -71,6 +71,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="仿照-模拟栈和队列的方法来进行非递归的二叉树遍历" class="h-entry article article-type-仿照" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/11/05/%E6%A8%A1%E6%8B%9F%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E7%9A%84%E6%96%B9%E6%B3%95%E6%9D%A5%E8%BF%9B%E8%A1%8C%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/" class="article-date">
+  <time class="dt-published" datetime="2022-11-05T08:04:47.000Z" itemprop="datePublished">2022-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/11/05/%E6%A8%A1%E6%8B%9F%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E7%9A%84%E6%96%B9%E6%B3%95%E6%9D%A5%E8%BF%9B%E8%A1%8C%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/">模拟栈和队列的方法来进行非递归的二叉树遍历</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>需要实现二叉树的前、中、后序遍历并且不使用递归方法。递归方法效率太低。</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>可以通过利用栈和队列的结构来实现二叉树的遍历，这样就可以不使用递归。那么就需要将栈和队列的实现以及基本操作拿过来并且改变成存储二叉树数据的结构。</p>
+<h1 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h1><p>可以不必完全把栈和队列的结构和操作照搬过来，可以利用栈和队列的结构理念来仿照或者说模拟一个栈和队列。</p>
+<h1 id="仿照栈来实现前、中、后序遍历"><a href="#仿照栈来实现前、中、后序遍历" class="headerlink" title="仿照栈来实现前、中、后序遍历"></a>仿照栈来实现前、中、后序遍历</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Pre_OrderTraverse</span><span class="params">(BiTree T,TElemtype(*visit)(TElemtype e))</span></span><br><span class="line">&#123;</span><br><span class="line">    BiTree Stack[<span class="number">100</span>],t;</span><br><span class="line">    <span class="type">int</span> k=<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span>(T==<span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        k++;</span><br><span class="line">        <span class="comment">//仿照一个栈</span></span><br><span class="line">        Stack[k]=T;<span class="comment">//将根节点入栈</span></span><br><span class="line">        <span class="keyword">while</span>(k&gt;<span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//出栈</span></span><br><span class="line">            t=Stack[k--];</span><br><span class="line">            visit(t-&gt;data);</span><br><span class="line">            <span class="comment">//栈是先进后出，先把左子树放进去再把右子树放进去</span></span><br><span class="line">            <span class="keyword">if</span>(t-&gt;rchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[++k]=t-&gt;rchild;</span><br><span class="line">            <span class="keyword">if</span>(t-&gt;lchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[++k]=t-&gt;lchild;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">In_OrderTraverse</span><span class="params">(BiTree T,TElemtype(*visit)(TElemtype e))</span></span><br><span class="line">&#123;</span><br><span class="line">    BiTree Stack[<span class="number">100</span>],t;</span><br><span class="line">    <span class="type">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(T==<span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> ;<span class="comment">//判空</span></span><br><span class="line">    t=T;</span><br><span class="line">    <span class="keyword">while</span>(t!=<span class="literal">NULL</span> || k&gt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//将所有左子树结点入栈</span></span><br><span class="line">        <span class="keyword">while</span>(t!=<span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            </span><br><span class="line">            Stack[++k]=t;</span><br><span class="line">            t=t-&gt;lchild;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果右节点为空的话，执行下一列语句</span></span><br><span class="line">        t=Stack[k--];</span><br><span class="line">        visit(t-&gt;data);</span><br><span class="line">        <span class="comment">//扫描右节点</span></span><br><span class="line">        t=t-&gt;rchild;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Post_OrderTraverse</span><span class="params">(BiTree T,TElemtype(*visit)(TElemtype e))</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//后序遍历比较复杂，我们需要左-右-根的顺序来遍历，把根放在最后比较麻烦。有一种简单的方法就是先按照根-右-左的顺序来存储在数列当中，但后只要反转数组输出就行了。</span></span><br><span class="line">    BiTree Stack[<span class="number">100</span>],t;</span><br><span class="line">    <span class="type">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> m=<span class="number">0</span>;</span><br><span class="line">    TElemtype a[<span class="number">100</span>];<span class="comment">//使用一个数组来保存数据，方便最后数组反转</span></span><br><span class="line">    <span class="keyword">if</span>(T==<span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> ;<span class="comment">//判空</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        k++;</span><br><span class="line">        <span class="comment">//仿照一个栈</span></span><br><span class="line">        Stack[k]=T;<span class="comment">//根节点入栈</span></span><br><span class="line">        <span class="keyword">while</span>(k&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//出栈</span></span><br><span class="line">            t=Stack[k--];</span><br><span class="line">            a[m++]=t-&gt;data;<span class="comment">//将其保存在一个数组当中</span></span><br><span class="line">            <span class="comment">//因为我们要按照根-右-左的顺序存入数组，但是栈是先进后出的，我们要先存右子树，所以右子树后入栈，左子树先入栈。</span></span><br><span class="line">            <span class="keyword">if</span>(t-&gt;lchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[++k]=t-&gt;lchild;<span class="comment">//入栈</span></span><br><span class="line">            <span class="keyword">if</span>(t-&gt;rchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[++k]=t-&gt;rchild;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//反转数组并且输出</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=m<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">        visit(a[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="模拟队列进行层序遍历"><a href="#模拟队列进行层序遍历" class="headerlink" title="模拟队列进行层序遍历"></a>模拟队列进行层序遍历</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Level_OrderTraverse</span><span class="params">(BiTree T,TElemtype(*visit)(TElemtype e))</span></span><br><span class="line">&#123;</span><br><span class="line">    BiTree Stack[<span class="number">100</span>],t;</span><br><span class="line">    t=T;</span><br><span class="line">    <span class="type">int</span> front=<span class="number">0</span>;<span class="comment">//使用front，rear模拟队列</span></span><br><span class="line">    <span class="type">int</span> rear=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(T==<span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> ;<span class="comment">//判空</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Stack[rear++]=t;</span><br><span class="line">        <span class="keyword">while</span>(front!=rear)</span><br><span class="line">        &#123;</span><br><span class="line">            t=Stack[front++];<span class="comment">//模拟队列，先获取front当前元素，然后再指向front++位元素</span></span><br><span class="line">            visit(t-&gt;data);</span><br><span class="line">            <span class="keyword">if</span>(t-&gt;lchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[rear++]=t-&gt;lchild;</span><br><span class="line">            <span class="keyword">if</span>(t-&gt;rchild!=<span class="literal">NULL</span>)</span><br><span class="line">                Stack[rear++]=t-&gt;rchild;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/11/05/%E6%A8%A1%E6%8B%9F%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E7%9A%84%E6%96%B9%E6%B3%95%E6%9D%A5%E8%BF%9B%E8%A1%8C%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/" data-id="cla3nobq90000cguv2qkq9rue" data-title="模拟栈和队列的方法来进行非递归的二叉树遍历" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-队列的顺序存储结构实现二叉树层序遍历" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/11/05/%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/" class="article-date">
@@ -459,45 +504,6 @@
 
 
   
-    <article id="post-first" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/09/first/" class="article-date">
-  <time class="dt-published" datetime="2022-10-09T05:34:28.000Z" itemprop="datePublished">2022-10-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/09/first/">first</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>NO.1</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/09/first/" data-id="cl90wux680000a0uv6o2h1ihd" data-title="first" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -534,6 +540,10 @@
       <ul>
         
           <li>
+            <a href="/2022/11/05/%E6%A8%A1%E6%8B%9F%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E7%9A%84%E6%96%B9%E6%B3%95%E6%9D%A5%E8%BF%9B%E8%A1%8C%E9%9D%9E%E9%80%92%E5%BD%92%E7%9A%84%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86/">模拟栈和队列的方法来进行非递归的二叉树遍历</a>
+          </li>
+        
+          <li>
             <a href="/2022/11/05/%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E5%B1%82%E5%BA%8F%E9%81%8D%E5%8E%86/">队列的顺序存储结构实现二叉树层序遍历</a>
           </li>
         
@@ -547,10 +557,6 @@
         
           <li>
             <a href="/2022/10/25/%E5%9B%BD%E7%8E%8B%E8%AE%A8%E5%8E%8C%E6%95%B0%E5%AD%974/">国王讨厌数字4</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/25/HanoiTower/">HanoiTower</a>
           </li>
         
       </ul>
